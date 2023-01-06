@@ -21,3 +21,6 @@ Endpoint: Fetch Points
 
 ### Installing Flask
 - pip install flask
+
+### Deploying the web-server
+- python ReceiptProcessor.py
