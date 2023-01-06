@@ -5,17 +5,20 @@ PLEASE CHECK the READ.ME file for instructions to setup the environment in order
 from flask import Flask, json, request
 import math
 
+# To store the generated receipt ID and the points earned for them
 receipt_points_records = dict()
 
 api = Flask(__name__)
 
 
+# POST method for the end-point /receipts/process/
 @api.route('/receipts/process/', methods=['POST'])
 def post_companies():
     content = request.json
     return calculate_total_points(content)
 
 
+# GET method for the end-pont /receipts/<rid>/points
 @api.route('/receipts/<rid>/points', methods=['GET'])
 def get_points(rid):
     receipt_id = int(rid)
@@ -25,6 +28,12 @@ def get_points(rid):
         return json.dumps({"Warning": "Receipt was not found. Please try again!"}), 201
 
 
+#
+# Calculates the total points earned for the receipt received through payload from the API call.
+# Used functions to calculate the points earned from different aspects of the receipt like from retailer, time, day, items etc.
+# param: JSON object - The JSON object of the receipt
+# :returns: JSON object - With the ID generated for the Receipt
+#
 def calculate_total_points(retailer_obj):
     retailer_points = points_from_retailer_name(retailer_obj['retailer'])
     bill_amount_points = points_from_total_bill(float(retailer_obj['total']))
@@ -34,7 +43,7 @@ def calculate_total_points(retailer_obj):
     total_points = retailer_points + bill_amount_points + items_points + purchase_day_points + purchase_time_points
     new_id = len(receipt_points_records) + 1
     receipt_points_records[new_id] = total_points
-    return {"receiptID": new_id,"points": total_points}
+    return {"receiptID": new_id}
 
 
 def points_from_retailer_name(name):
