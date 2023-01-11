@@ -1,6 +1,6 @@
 # Rewards-Processor
 
-An API service that calculates the reward points earned for every receipt.
+An API service that calculates the reward points earned given a receipt.
 
 ### Endpoint: Process Receipts
 
